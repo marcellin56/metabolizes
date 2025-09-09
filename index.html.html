@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hipotireoidismo Não É Desculpa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #3D405B;
+            /* Adicionado padding-bottom para o botão fixo não cobrir o conteúdo */
+            padding-bottom: 7rem; /* Ajuste conforme a altura do seu botão fixo */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D3674A;
+            border-bottom-color: #D3674A;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #D3674A;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #C05639;
+            transform: scale(1.02);
+        }
+        .section-icon {
+            font-size: 2.5rem;
+            color: #D3674A;
+        }
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 400px;
+            height: 400px;
+        }
+        .checklist-item {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .checklist-item.completed {
+            background-color: #E0E0E0;
+            text-decoration: line-through;
+        }
+        .cta-box {
+            background-color: #D3674A;
+            color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        /* Estilo para o botão de compra fixo */
+        .fixed-cta-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 0;
+            z-index: 1000; /* Garante que fique acima de outros elementos */
+            text-align: center;
+        }
+        .fixed-cta-button .btn-primary {
+            width: 90%; /* Ajuste para preencher a largura no mobile */
+            max-width: 500px; /* Limita a largura em telas maiores */
+        }
+        @media (min-width: 768px) {
+            .fixed-cta-button .btn-primary {
+                width: auto;
+            }
+        }
+        /* Animação Pulsante */
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .btn-pulse {
+            animation: pulse-animation 2s infinite;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-[#3D405B]">Hipotireoidismo Não É Desculpa</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#cap1" class="nav-link pb-1">Cap. 1</a>
+                <a href="#cap2" class="nav-link pb-1">Cap. 2</a>
+                <a href="#cap3" class="nav-link pb-1">Cap. 3</a>
+                <a href="#cap4" class="nav-link pb-1">Cap. 4</a>
+                <a href="#cap5" class="nav-link pb-1">Cap. 5</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3674A]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2 bg-white">
+            <a href="#cap1" class="block nav-link text-center py-1">Cap. 1</a>
+            <a href="#cap2" class="block nav-link text-center py-1">Cap. 2</a>
+            <a href="#cap3" class="block nav-link text-center py-1">Cap. 3</a>
+            <a href="#cap4" class="block nav-link text-center py-1">Cap. 4</a>
+            <a href="#cap5" class="block nav-link text-center py-1">Cap. 5</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="container mx-auto px-6 py-16 md:py-24 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-2 text-[#D3674A]">O Fim da Fadiga. O Fim do Inchaço. O Fim das Desculpas.</h1>
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 text-[#3D405B]">Seu Hipotireoidismo Não É Mais Um Obstáculo. É o Nosso Alvo.</h2>
+            <h3 class="text-xl md:text-2xl max-w-3xl mx-auto mb-8 font-normal text-[#6B7280]">
+                O Guia Brutalmente Eficaz para Perder Peso aos 40+ e Reconquistar Seu Corpo Sem Fazer Carinho em Seus Problemas.
+            </h3>
+            <p class="text-lg md:text-xl font-bold max-w-2xl mx-auto text-[#D3674A] mb-8">Por apenas **R$ 29,90**, destrave o metabolismo que a sua tireoide escondeu.</p>
+            <a href="#cta-final" class="px-8 py-4 btn-primary rounded-full font-bold text-lg inline-block hover:shadow-lg">SIM, QUERO DESTRAVAR MEU METABOLISMO POR APENAS R$ 29,90!</a>
+        </section>
+
+        <section id="cap1" class="bg-white py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h3 class="text-3xl md:text-4xl font-bold mb-2">Capítulo 1: Por Que Sua Tireoide Te Sabota</h3>
+                     <p class="text-lg text-gray-600 max-w-2xl mx-auto">Você se sente cansada, inchada e o peso não sai, não importa o que faça? É porque o seu **metabolismo lento** e a **inflamação** estão em guerra com sua tireoide. Vamos desvendar o segredo e armar você para a batalha.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="card p-6 text-center">
+                        <div class="section-icon mx-auto mb-4">🦋</div>
+                        <h4 class="text-xl font-bold mb-2">Hipotireoidismo Não É Sentença</h4>
+                        <p>A sua tireoide é como a chave de ignição do seu carro metabólico. Se ela não funciona bem, todo o sistema desacelera. Mas não se preocupe, você não está quebrada. Seu corpo só precisa do combustível certo.</p>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <div class="section-icon mx-auto mb-4">💉</div>
+                        <h4 class="text-xl font-bold mb-2">A Resistência à Insulina</h4>
+                        <p>O corpo se torna menos sensível à insulina, levando ao acúmulo de gordura. Nossa dieta anti-inflamatória é a sua principal ferramenta para reverter esse quadro.</p>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <div class="section-icon mx-auto mb-4">🔥</div>
+                        <h4 class="text-xl font-bold mb-2">A Inflamação Silenciosa</h4>
+                        <p>A inflamação crônica sabota seus hormônios, incluindo os da tireoide. Vamos focar em alimentos que apagam o "fogo" interno e otimizam sua função hormonal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-16 md:py-24">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h3 class="text-3xl md:text-4xl font-bold mb-2">Histórias Reais de Sucesso</h3>
+                     <p class="text-lg text-gray-600 max-w-2xl mx-auto">Não é teoria. São resultados. Veja o que mulheres reais, com **hipotireoidismo**, alcançaram quando pararam de dar desculpas.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="card p-6">
+                        <p class="italic text-gray-600 mb-4">"Eu vivia com a energia no chão e a balança estagnada. Perdi **18 kg** mesmo com Hashimoto e hoje me sinto imparável. O protocolo é brutalmente eficaz e me devolveu a vida."</p>
+                        <p class="font-bold">Ana, 47 anos</p>
+                    </div>
+                    <div class="card p-6">
+                        <p class="italic text-gray-600 mb-4">"Depois de 40 anos, achei que o peso era permanente. Mas o guia me mostrou o caminho. Em menos de 2 meses, perdi **10 kg** e recuperei a confiança. Mudar a vida por R$29,90 foi o melhor investimento."</p>
+                        <p class="font-bold">Carla, 41 anos</p>
+                    </div>
+                    <div class="card p-6">
+                        <p class="italic text-gray-600 mb-4">"Eu já tinha desistido. Achei que os hormônios me venceriam. O guia foi o soco na mesa que eu precisava. Perdi 15kg e me sinto 20 anos mais jovem."</p>
+                        <p class="font-bold">Sofia, 52 anos</p>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <section id="cap2" class="bg-white py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <p class="text-lg font-semibold text-[#D3674A] mb-2">Este não é mais um 'guia'. É o seu manual de batalha contra a fadiga e o peso que você achava ser inevitável. Chegou a hora de ter um plano.</p>
+                     <h3 class="text-3xl md:text-4xl font-bold mb-2">Capítulo 2: Os 3 Pilares do Emagrecimento</h3>
+                     <p class="text-lg text-gray-600 max-w-2xl mx-auto">Se você está cansada de tentar e falhar, é porque falta um protocolo. Estes são os 3 pilares inegociáveis para reprogramar seu corpo e queimar gordura de forma eficiente.</p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                        <button id="tab1-btn" class="py-3 px-6 rounded-lg text-center font-semibold text-white bg-[#D3674A]">1. Nutrição Anti-inflamatória</button>
+                        <button id="tab2-btn" class="py-3 px-6 rounded-lg text-center font-semibold text-[#3D405B] bg-gray-200">2. Controle de Carboidratos</button>
+                        <button id="tab3-btn" class="py-3 px-6 rounded-lg text-center font-semibold text-[#3D405B] bg-gray-200">3. Timing Alimentar</button>
+                    </div>
+                    <div id="tab-content" class="card p-8">
+                        <div id="tab1-content">
+                            <h4 class="text-2xl font-bold mb-4">Nutrição Anti-inflamatória</h4>
+                            <p>Elimine imediatamente **glúten, lactose, ultraprocessados** e óleos vegetais inflamatórios. Este é o primeiro e mais importante passo para reduzir a inflamação e otimizar seus **hormônios tireoidianos**.</p>
+                            <p class="mt-4 font-semibold">Exemplos de Otimização Nutricional:</p>
+                            <div class="grid md:grid-cols-2 mt-4 gap-6">
+                                <div>
+                                    <h5 class="font-bold text-gray-700">Café da Manhã</h5>
+                                    <p>Ovos mexidos com açafrão, abacate e um punhado de castanhas-do-pará (ricas em **selênio**).</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-700">Almoço</h5>
+                                    <p>Salmão grelhado (rico em **ômega-3**) com folhas verdes e vegetais de baixo amido.</p>
+                                </div>
+                            </div>
+                            <div class="mt-8 mx-auto flex flex-col items-center">
+                                <p class="text-center text-sm mb-4">Distribuição recomendada de macronutrientes:</p>
+                                <div class="chart-container">
+                                    <canvas id="macroChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab2-content" class="hidden">
+                            <h4 class="text-2xl font-bold mb-4">Controle de Carboidratos Líquidos</h4>
+                            <p>Não é uma dieta "zero-carb". É uma dieta **low-carb adaptada** para a sua tireoide. O foco é consumir vegetais fibrosos e proteínas, que estabilizam o açúcar no sangue e reduzem a resistência à insulina. Seus carboidratos devem vir da terra, não de pacotes.</p>
+                            <p class="mt-4 font-semibold">Alimentos Aprovados:</p>
+                            <ul class="list-disc list-inside mt-2 space-y-2">
+                                <li>Folhas verdes, brócolis, couve-flor.</li>
+                                <li>Abacate, nozes, sementes.</li>
+                                <li>Proteínas de qualidade: ovos, peixes, carnes magras.</li>
+                            </ul>
+                        </div>
+                        <div id="tab3-content" class="hidden">
+                            <h4 class="text-2xl font-bold mb-4">Timing Alimentar</h4>
+                            <p>Alimentar-se em janelas específicas de tempo, como o jejum intermitente, pode melhorar a sensibilidade à insulina e a autofagia, um processo de limpeza celular. Isso é crucial para um **metabolismo lento** e para o **emagrecimento após os 40**.</p>
+                            <p class="mt-4 font-semibold">Exemplo de Janela de Alimentação:</p>
+                            <ul class="list-disc list-inside mt-2 space-y-2">
+                                <li>Jejum de 16 horas: pare de comer às 20h e retome às 12h do dia seguinte.</li>
+                                <li>Isso não é uma regra rígida, mas uma ferramenta para acelerar os resultados.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-12 text-center">
+                        <a href="#cta-final" class="px-8 py-4 btn-primary rounded-full font-bold text-lg inline-block hover:shadow-lg">LIBERTE-SE DO PESO AGORA! (Clique para Acesso Instantâneo)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cap3" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-2">Capítulo 3: O Protocolo de 21 Dias</h3>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Este é o seu mapa. Um plano alimentar prático, passo a passo, que elimina o que te sabota e nutre o que te fortalece. Chega de achismo, sua transformação começa agora.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-4 gap-4 mb-8">
+                    <button class="day-btn py-3 px-6 rounded-lg text-center font-bold btn-primary">Dia 1</button>
+                    <button class="day-btn py-3 px-6 rounded-lg text-center font-bold bg-gray-200 text-[#3D405B]">Dia 2</button>
+                    <button class="day-btn py-3 px-6 rounded-lg text-center font-bold bg-gray-200 text-[#3D405B]">Dia 3</button>
+                    <button class="day-btn py-3 px-6 rounded-lg text-center font-bold bg-gray-200 text-[#3D405B]">Dia 4</button>
+                </div>
+                <div id="protocol-content" class="card p-8">
+                    <h4 class="text-2xl font-bold mb-4">Dia 1: O Ponto de Partida</h4>
+                    <p class="mb-4">Hoje é o dia. Elimine todos os ultraprocessados da sua geladeira. Comece a beber mais água e a se concentrar em proteínas e gorduras saudáveis.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="font-bold mb-2">Seu Plano Alimentar:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>**Café da manhã:** 30g de proteína no café, com ovos e abacate.</li>
+                                <li>**Almoço:** Salada de folhas verdes com frango desfiado e azeite de oliva extra virgem.</li>
+                                <li>**Jantar:** Salmão com aspargos.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-bold mb-2">Dicas e Estratégias:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Beba um copo de água com limão ao acordar.</li>
+                                <li>Se a fadiga bater, faça um alongamento de 5 minutos.</li>
+                                <li>Se a compulsão aparecer, beba água ou chá de hibisco.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cap4" class="bg-white py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h3 class="text-3xl md:text-4xl font-bold mb-2">Capítulo 4: 100 Receitas Turbo</h3>
+                     <p class="text-lg text-gray-600 max-w-2xl mx-auto">Comer bem não precisa ser sem graça. Estas receitas são desenhadas para queimar gordura sem sofrimento, com ingredientes que amam sua tireoide (ricas em **selênio**, **zinco** e **ômega-3**).</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="card p-6 recipe-card cursor-pointer">
+                        <h4 class="text-xl font-bold mb-2">Muffin de Abacate com Chia</h4>
+                        <p class="text-gray-600">Perfeito para um café da manhã rápido e nutritivo. Carboidratos líquidos: 10g.</p>
+                    </div>
+                    <div class="card p-6 recipe-card cursor-pointer">
+                        <h4 class="text-xl font-bold mb-2">Salmão com Aspargos e Gengibre</h4>
+                        <p class="text-gray-600">Uma refeição completa, saborosa e potente para combater a **inflamação**.</p>
+                    </div>
+                    <div class="card p-6 recipe-card cursor-pointer">
+                        <h4 class="text-xl font-bold mb-2">Sopa de Brócolis e Curry</h4>
+                        <p class="text-gray-600">Aquece e nutre. Uma ótima opção para jantares leves. Carboidratos líquidos: 8g.</p>
+                    </div>
+                    <div class="card p-6 recipe-card cursor-pointer">
+                        <h4 class="text-xl font-bold mb-2">Omelete Turbo com Espinafre</h4>
+                        <p class="text-gray-600">Cheia de proteína e nutrientes. A melhor maneira de começar o dia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cap5" class="py-16 md:py-24">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h3 class="text-3xl md:text-4xl font-bold mb-2">Capítulo 5: Mantenha o Resultado</h3>
+                     <p class="text-lg text-gray-600 max-w-2xl mx-auto">O **emagrecimento após os 40** é uma maratona, não uma corrida de 100 metros. Aqui estão as estratégias de lifestyle para escapar do **efeito sanfona** e manter sua nova vitalidade.</p>
+                </div>
+                <div class="card p-8 max-w-4xl mx-auto">
+                    <h4 class="text-2xl font-bold mb-4 text-center">Checklist de Hábitos Diários</h4>
+                    <ul id="checklist" class="space-y-4">
+                        <li class="flex items-center p-3 rounded-lg checklist-item">
+                            <span class="mr-4 text-2xl text-gray-400">☐</span>
+                            <span>Gerenciar o estresse com 10 minutos de meditação ou respiração.</span>
+                        </li>
+                        <li class="flex items-center p-3 rounded-lg checklist-item">
+                            <span class="mr-4 text-2xl text-gray-400">☐</span>
+                            <span>Priorizar o sono, com pelo menos 7 a 8 horas por noite.</span>
+                        </li>
+                         <li class="flex items-center p-3 rounded-lg checklist-item">
+                            <span class="mr-4 text-2xl text-gray-400">☐</span>
+                            <span>Praticar exercícios de baixo impacto como caminhada, yoga ou natação.</span>
+                        </li>
+                        <li class="flex items-center p-3 rounded-lg checklist-item">
+                            <span class="mr-4 text-2xl text-gray-400">☐</span>
+                            <span>Continuar a focar em proteína e gorduras saudáveis em cada refeição.</span>
+                        </li>
+                        <li class="flex items-center p-3 rounded-lg checklist-item">
+                            <span class="mr-4 text-2xl text-gray-400">☐</span>
+                            <span>Monitorar os sintomas para manter o controle total da sua saúde.</span>
+                        </li>
+                    </ul>
+                </div>
+             </div>
+        </section>
+
+        <section id="cta-final" class="container mx-auto px-6 py-16 md:py-24 text-center">
+            <div class="cta-box max-w-3xl mx-auto">
+                <h3 class="text-4xl md:text-5xl font-bold mb-4">Ação. Resultados. Liberdade.</h3>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-6">
+                    A oferta por tempo limitado termina em:
+                </p>
+                <div id="countdown" class="text-3xl md:text-4xl font-mono mb-8 font-bold"></div>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">
+                    Este guia é o seu manual de guerra. Chega de desculpas. Chega de **metabolismo lento**. Acesso imediato, garantia de 30 dias ou seu dinheiro de volta. Sua transformação começa **AGORA**.
+                </p>
+                
+
+<a href="#" class="px-8 py-4 btn-primary rounded-full font-bold text-lg inline-block hover:shadow-lg">GARANTA MEU ACESSO AGORA! (Por Apenas R$ 29,90)</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#3D405B] text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Hipotireoidismo Não É Desculpa. Todos os direitos reservados.</p>
+            <p class="text-sm text-gray-400 mt-2">Este conteúdo é informativo e não substitui a consulta médica.</p>
+        </div>
+    </footer>
+
+    
+
+<div class="fixed-cta-button">
+        <a href="#cta-final" class="px-8 py-4 btn-primary rounded-full font-bold text-lg block mx-auto btn-pulse">Garantir meu acesso agora!</a>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const header = document.getElementById('header');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            // Ajusta o z-index da header para que o menu móvel fique acima do botão fixo
+            if (!mobileMenu.classList.contains('hidden')) {
+                header.style.zIndex = '1001'; 
+            } else {
+                header.style.zIndex = '50';
+            }
+        });
+        
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    header.style.zIndex = '50'; // Restaura o z-index
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('section');
+        const headerHeight = header.offsetHeight;
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: `-${headerHeight}px 0px 0px 0px`,
+            threshold: 0.4
+        };
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        const tabButtons = document.querySelectorAll('#tab1-btn, #tab2-btn, #tab3-btn');
+        const tabContents = document.querySelectorAll('#tab1-content, #tab2-content, #tab3-content');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.id.replace('-btn', '-content');
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('bg-[#D3674A]', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-[#3D405B]');
+                });
+                button.classList.remove('bg-gray-200', 'text-[#3D405B]');
+                button.classList.add('bg-[#D3674A]', 'text-white');
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(targetId).classList.remove('hidden');
+            });
+        });
+
+        const protocolDays = {
+            'Dia 1': {
+                title: 'Dia 1: O Ponto de Partida',
+                plan: ['30g de proteína no café, com ovos e abacate.', 'Salada de folhas verdes com frango desfiado e azeite.', 'Salmão com aspargos.'],
+                tips: ['Beba um copo de água com limão ao acordar.', 'Se a fadiga bater, faça um alongamento de 5 minutos.', 'Se a compulsão aparecer, beba água ou chá de hibisco.']
+            },
+            'Dia 2': {
+                title: 'Dia 2: Foco na Hidratação',
+                plan: ['Café com manteiga ghee e canela.', 'Almoço: Carne magra, brócolis e batata-doce.', 'Jantar: Omelete com cogumelos e espinafre.'],
+                tips: ['Beba pelo menos 2 litros de água.', 'Tome sol por 15 minutos para vitamina D.', 'Comece a prestar atenção na qualidade do seu sono.']
+            },
+            'Dia 3': {
+                title: 'Dia 3: Anti-inflamatório Ativo',
+                plan: ['Iogurte de coco com sementes de chia.', 'Almoço: Salada com atum, nozes e azeite de oliva.', 'Jantar: Sopa de abóbora com gengibre.'],
+                tips: ['Adicione cúrcuma às suas refeições.', 'Pratique 5 minutos de respiração profunda.', 'Corte o café após as 14h.']
+            },
+            'Dia 4': {
+                title: 'Dia 4: Potência e Nutrição',
+                plan: ['Frutas vermelhas com castanhas.', 'Almoço: Frango ao curry com couve-flor.', 'Jantar: Salmão com aspargos e gengibre.'],
+                tips: ['Priorize alimentos ricos em selênio e zinco.', 'Inclua um exercício de baixo impacto, como uma caminhada.', 'Ouça uma playlist relaxante antes de dormir.']
+            }
+        };
+
+        const dayButtons = document.querySelectorAll('.day-btn');
+        dayButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                dayButtons.forEach(btn => {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('bg-gray-200', 'text-[#3D405B]');
+                });
+                button.classList.remove('bg-gray-200', 'text-[#3D405B]');
+                button.classList.add('btn-primary');
+                
+                const day = button.textContent;
+                const content = protocolDays[day];
+                const protocolContent = document.getElementById('protocol-content');
+                protocolContent.innerHTML = `
+                    <h4 class="text-2xl font-bold mb-4">${content.title}</h4>
+                    <p class="mb-4">Este é o seu plano de ação para ${content.title}. Siga os passos e sinta a diferença!</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="font-bold mb-2">Seu Plano Alimentar:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                ${content.plan.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-bold mb-2">Dicas e Estratégias:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                ${content.tips.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+        
+        const checklistItems = document.querySelectorAll('.checklist-item');
+        checklistItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const icon = item.querySelector('span');
+                if (item.classList.contains('completed')) {
+                    item.classList.remove('completed', 'bg-gray-200');
+                    icon.textContent = '☐';
+                    icon.classList.add('text-gray-400');
+                    icon.classList.remove('text-green-600');
+                } else {
+                    item.classList.add('completed', 'bg-gray-200');
+                    icon.textContent = '☑';
+                    icon.classList.remove('text-gray-400');
+                    icon.classList.add('text-green-600');
+                }
+            });
+        });
+
+        const ctx = document.getElementById('macroChart').getContext('2d');
+        const macroChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Gorduras Saudáveis', 'Proteínas', 'Carboidratos Líquidos'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: ['#E07A5F', '#81B29A', '#F2CC8F'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#3D405B',
+                            font: { family: "'Inter', sans-serif" }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed !== null) { label += context.parsed + '%'; }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+
+        const countdownElement = document.getElementById('countdown');
+        const deadline = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+        
+        const updateCountdown = () => {
+            const now = new Date();
+            const timeRemaining = deadline - now;
+            
+            if (timeRemaining < 0) {
+                countdownElement.textContent = 'Oferta Expirou!';
+                return;
+            }
+            
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    });
+</script>
+
+</body>
+</html>
